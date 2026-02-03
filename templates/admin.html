@@ -11,22 +11,25 @@
     <div class="card bg-dark text-white p-4 mb-4" style="border: 1px solid #e94560;">
         <h4>ပစ္စည်းအသစ် ထည့်ရန်</h4>
         <form action="/admin/add" method="POST">
-            <div class="mb-3"><input type="text" name="name" class="form-control" placeholder="ပစ္စည်းနာမည် (ဥပမာ - 86 Diamonds)" required></div>
+            <div class="mb-3"><input type="text" name="name" class="form-control" placeholder="ပစ္စည်းနာမည်" required></div>
             <div class="mb-3"><input type="text" name="price" class="form-control" placeholder="ဈေးနှုန်း (Ks)" required></div>
-            <div class="mb-3"><input type="text" name="img" class="form-control" placeholder="ပုံ Link (URL)" required></div>
+            <div class="mb-3"><input type="text" name="img" class="form-control" placeholder="ပုံ Link (Direct URL)" required></div>
             <button type="submit" class="btn btn-danger w-100">Add Product</button>
         </form>
     </div>
 
     <h4>လက်ရှိရောင်းနေသော ပစ္စည်းများ</h4>
     <table class="table table-dark">
-        <thead><tr><th>ပုံ</th><th>အမည်</th><th>ဈေးနှုန်း</th></tr></thead>
+        <thead><tr><th>ပုံ</th><th>အမည်</th><th>ဈေးနှုန်း</th><th>လုပ်ဆောင်ချက်</th></tr></thead>
         <tbody>
             {% for p in products %}
             <tr>
-                <td><img src="{{p[3]}}" width="50"></td>
+                <td><img src="{{p[3]}}" width="50" onerror="this.src='https://via.placeholder.com/50'"></td>
                 <td>{{p[1]}}</td>
                 <td>{{p[2]}} Ks</td>
+                <td>
+                    <a href="/admin/delete/{{p[0]}}" class="btn btn-sm btn-outline-danger" onclick="return confirm('သေချာဖျက်မှာလားဗျ?')">ဖျက်ပါ</a>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
