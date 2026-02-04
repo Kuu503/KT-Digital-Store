@@ -25,4 +25,66 @@ def index():
     conn = sqlite3.connect('orders.db')
     categories = conn.execute('SELECT * FROM categories').fetchall()
     conn.close()
-    return render
+    return render_template('index.html', categories=categories)
+
+@app.route('/category/<int:cat_id>')
+def category_page(cat_id):
+    conn = sqlite3.connect('orders.db')
+    category = conn.execute('SELECT * FROM categories WHERE id = ?', (cat_id,)).fetchone()
+    products = conn.execute('SELECT * FROM products WHERE category_id = ?', (cat_id,)).fetchall()
+    conn.close()
+    return render_template('category.html', category=category, products=products)
+
+@app.route('/admin')
+def admin():
+    conn = sqlite3.connect('orders.db')
+    categories = conn.execute('SELECT * FROM categories').fetchall()
+    products = conn.execute('SELECT p.*, c.name FROM products p JOIN categories c ON p.category_id = c.id').fetchall()
+    conn.close()
+    return render_template('admin.html', categories=categories, products=products)
+
+@app.route('/admin/add_category', methods=['POST'])
+def add_category():
+    name = request.form.get('name')
+    icon = request.form.get('icon_url')
+    conn = sqlite3.connect('orders.db')
+    conn.execute('INSERT INTO categories (name, icon_url) VALUES (?,?)', (name, icon))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('admin'))
+
+@app.route('/admin/add_product', methods=['POST'])
+def add_product():
+    cat_id = request.form.get('category_id')
+    name = request.form.get('name')
+    price = request.form.get('price')
+    img = request.form.get('img_url')
+    conn = sqlite3.connect('orders.db')
+    conn.execute('INSERT INTO products (category_id, name, price, image_url) VALUES (?,?,?,?)', (cat_id, name, price, img))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('admin'))
+
+@app.route('/buy', methods=['POST'])
+def buy():
+    p_id = request.form.get('player_id')
+    z_id = request.form.get('zone_id', 'N/A')
+    item_name = request.form.get('item_name')
+    item_price = request.form.get('item_price')
+    now = datetime.now().strftime("%I:%M %p (%d/%m)")
+    
+    # Telegram သို့ အော်ဒါပို့ခြင်း
+    msg = f"🎮 **New Order Alert!**\n\n👤 Player ID: `{p_id}` ({z_id})\n💎 Item: {item_name}\n💰 Price: {item_price} Ks\n⏰ Time: {now}"
+    requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage", data={"chat_id": CHAT_ID, "text": msg, "parse_mode": "Markdown"})
+    
+    # Database ထဲ သိမ်းခြင်း
+    conn = sqlite3.connect('orders.db')
+    conn.execute('INSERT INTO orders (player_id, zone_id, item_name, item_price, time) VALUES (?,?,?,?,?)', (p_id, z_id, item_name, item_price, now))
+    conn.commit()
+    conn.close()
+    
+    # အောင်မြင်ကြောင်း Neon Page ကို ပြပေးခြင်း (Line 86 ပြင်ထားသောနေရာ)
+    return render_template('success.html')
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=os.getenv("PORT", default=8080))
