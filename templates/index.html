@@ -1,43 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>KT Admin - Professional Mode</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DigitByKT - Gaming Store</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>body { background: #1a1a2e; color: white; padding: 20px; }</style>
+    <style>
+        body { background-color: #0d0d2b; color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .neon-text { text-shadow: 0 0 10px #00f2ff, 0 0 20px #00f2ff; color: #00f2ff; }
+        .game-card { 
+            background: #161b33; border: 2px solid #1f2a44; border-radius: 15px; 
+            transition: all 0.3s ease; cursor: pointer; overflow: hidden;
+        }
+        .game-card:hover { 
+            transform: translateY(-10px); border-color: #00f2ff; 
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.5); 
+        }
+        .game-icon { width: 100%; height: 180px; object-fit: cover; }
+        .category-name { padding: 15px; font-weight: bold; font-size: 1.2rem; text-align: center; }
+        .container { padding-top: 50px; }
+    </style>
 </head>
-<body class="container">
-    <h2 class="mb-4">🚀 DigitByKT - Professional Admin</h2>
-    
-    <div class="row">
-        <div class="col-md-6 mb-4">
-            <div class="card bg-dark text-white p-4 border-info">
-                <h4>၁။ ဂိမ်းအမျိုးအစားသစ် (Category)</h4>
-                <form action="/admin/add_category" method="POST">
-                    <input type="text" name="name" class="form-control mb-2" placeholder="ဂိမ်းအမည် (ဥပမာ - MLBB)" required>
-                    <input type="text" name="icon_url" class="form-control mb-2" placeholder="Neon Icon Link (PostImages)" required>
-                    <button type="submit" class="btn btn-info w-100">Add Category</button>
-                </form>
+<body>
+    <div class="container text-center">
+        <h1 class="mb-5 neon-text">🚀 DIGIT BY KT STORE</h1>
+        <p class="mb-5 text-muted">အောက်ပါဂိမ်းများအနက် မိမိဝယ်ယူလိုသော ဂိမ်းကို ရွေးချယ်ပါ</p>
+        <div class="row g-4">
+            {% for cat in categories %}
+            <div class="col-6 col-md-3">
+                <div class="game-card" onclick="location.href='/category/{{cat[0]}}'">
+                    <img src="{{cat[2]}}" class="game-icon" alt="{{cat[1]}}">
+                    <div class="category-name">{{cat[1]}}</div>
+                </div>
             </div>
-        </div>
-
-        <div class="col-md-6 mb-4">
-            <div class="card bg-dark text-white p-4 border-danger">
-                <h4>၂။ ပစ္စည်းအသစ် (Product)</h4>
-                <form action="/admin/add_product" method="POST">
-                    <select name="category_id" class="form-control mb-2" required>
-                        <option value="">-- ဂိမ်းရွေးပါ --</option>
-                        {% for cat in categories %}
-                        <option value="{{ cat[0] }}">{{ cat[1] }}</option>
-                        {% endfor %}
-                    </select>
-                    <input type="text" name="name" class="form-control mb-2" placeholder="ပစ္စည်းအမည် (ဥပမာ - 86 Diamonds)" required>
-                    <input type="text" name="price" class="form-control mb-2" placeholder="ဈေးနှုန်း (Ks)" required>
-                    <input type="text" name="img_url" class="form-control mb-2" placeholder="ပစ္စည်းပုံ Link" required>
-                    <button type="submit" class="btn btn-danger w-100">Add Product</button>
-                </form>
-            </div>
+            {% endfor %}
         </div>
     </div>
-    <a href="/" class="btn btn-outline-light">ဆိုင်ရှေ့သို့ ပြန်သွားရန်</a>
 </body>
 </html>
