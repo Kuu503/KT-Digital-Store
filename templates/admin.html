@@ -1,40 +1,43 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>KT Admin Panel</title>
+    <title>KT Admin - Professional Mode</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>body { background: #1a1a2e; color: white; padding: 20px; }</style>
 </head>
 <body class="container">
-    <h2 class="mb-4">🚀 KT DigitalStore - Admin Panel</h2>
+    <h2 class="mb-4">🚀 DigitByKT - Professional Admin</h2>
     
-    <div class="card bg-dark text-white p-4 mb-4" style="border: 1px solid #e94560;">
-        <h4>ပစ္စည်းအသစ် ထည့်ရန်</h4>
-        <form action="/admin/add" method="POST">
-            <div class="mb-3"><input type="text" name="name" class="form-control" placeholder="ပစ္စည်းနာမည်" required></div>
-            <div class="mb-3"><input type="text" name="price" class="form-control" placeholder="ဈေးနှုန်း (Ks)" required></div>
-            <div class="mb-3"><input type="text" name="img" class="form-control" placeholder="ပုံ Link (Direct URL)" required></div>
-            <button type="submit" class="btn btn-danger w-100">Add Product</button>
-        </form>
-    </div>
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card bg-dark text-white p-4 border-info">
+                <h4>၁။ ဂိမ်းအမျိုးအစားသစ် (Category)</h4>
+                <form action="/admin/add_category" method="POST">
+                    <input type="text" name="name" class="form-control mb-2" placeholder="ဂိမ်းအမည် (ဥပမာ - MLBB)" required>
+                    <input type="text" name="icon_url" class="form-control mb-2" placeholder="Neon Icon Link (PostImages)" required>
+                    <button type="submit" class="btn btn-info w-100">Add Category</button>
+                </form>
+            </div>
+        </div>
 
-    <h4>လက်ရှိရောင်းနေသော ပစ္စည်းများ</h4>
-    <table class="table table-dark">
-        <thead><tr><th>ပုံ</th><th>အမည်</th><th>ဈေးနှုန်း</th><th>လုပ်ဆောင်ချက်</th></tr></thead>
-        <tbody>
-            {% for p in products %}
-            <tr>
-                <td><img src="{{p[3]}}" width="50" onerror="this.src='https://via.placeholder.com/50'"></td>
-                <td>{{p[1]}}</td>
-                <td>{{p[2]}} Ks</td>
-                <td>
-                    <a href="/admin/delete/{{p[0]}}" class="btn btn-sm btn-outline-danger" onclick="return confirm('သေချာဖျက်မှာလားဗျ?')">ဖျက်ပါ</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <hr>
-    <a href="/" class="btn btn-outline-info">ဆိုင်ရှေ့သို့ ပြန်သွားရန်</a>
+        <div class="col-md-6 mb-4">
+            <div class="card bg-dark text-white p-4 border-danger">
+                <h4>၂။ ပစ္စည်းအသစ် (Product)</h4>
+                <form action="/admin/add_product" method="POST">
+                    <select name="category_id" class="form-control mb-2" required>
+                        <option value="">-- ဂိမ်းရွေးပါ --</option>
+                        {% for cat in categories %}
+                        <option value="{{ cat[0] }}">{{ cat[1] }}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="text" name="name" class="form-control mb-2" placeholder="ပစ္စည်းအမည် (ဥပမာ - 86 Diamonds)" required>
+                    <input type="text" name="price" class="form-control mb-2" placeholder="ဈေးနှုန်း (Ks)" required>
+                    <input type="text" name="img_url" class="form-control mb-2" placeholder="ပစ္စည်းပုံ Link" required>
+                    <button type="submit" class="btn btn-danger w-100">Add Product</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <a href="/" class="btn btn-outline-light">ဆိုင်ရှေ့သို့ ပြန်သွားရန်</a>
 </body>
 </html>
