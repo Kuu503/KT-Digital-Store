@@ -3,48 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DigitByKT - Pro Gaming Store</title>
+    <title>DigitByKT - Home</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
     <style>
         :root { --neon: #00f2ff; --neon-pink: #ff00ff; }
-        body { background: #050510; color: #fff; font-family: 'Rajdhani', sans-serif; min-height: 100vh; overflow-x: hidden; }
-        
-        .neon-header { font-family: 'Orbitron', sans-serif; font-size: 1.8rem; font-weight: 800; background: linear-gradient(to right, var(--neon), var(--neon-pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 2px; margin: 30px 0 10px; }
-        .welcome-text { color: #fff; font-size: 0.9rem; opacity: 0.8; letter-spacing: 1px; margin-bottom: 40px; }
+        body { background: #050510; color: #fff; font-family: 'Rajdhani', sans-serif; min-height: 100vh; margin: 0; padding-bottom: 50px; }
+        .neon-header { font-family: 'Orbitron', sans-serif; font-size: 1.8rem; font-weight: 800; background: linear-gradient(to right, var(--neon), var(--neon-pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 2px; margin: 40px 0 5px; text-transform: uppercase; }
+        .welcome-text { color: #fff; font-size: 0.85rem; opacity: 0.7; letter-spacing: 1px; margin-bottom: 30px; }
 
-        /* CodaShop Style Grid: ဖုန်းမှာ ၂ ကွက်စီ ပေါ်ပါမယ် */
-        .game-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; padding: 15px; }
+        /* CodaShop Style Compact Grid */
+        .game-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 15px; }
+        @media (min-width: 768px) { .game-grid { grid-template-columns: repeat(4, 1fr); } }
 
-        .game-card {
-            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 15px;
-            overflow: hidden; transition: 0.3s; cursor: pointer; position: relative;
-        }
-        .game-card:hover { transform: translateY(-5px); border-color: var(--neon); box-shadow: 0 5px 20px rgba(0, 242, 255, 0.3); }
-
-        /* Game Card အရွယ်အစားကို သေးလိုက်ပါပြီ */
+        .game-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; overflow: hidden; transition: 0.3s; cursor: pointer; }
+        .game-card:hover { transform: translateY(-5px); border-color: var(--neon); box-shadow: 0 5px 15px rgba(0, 242, 255, 0.2); }
         .game-img-wrapper { width: 100%; aspect-ratio: 1/1; overflow: hidden; }
-        .game-img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
-        .game-card:hover .game-img { transform: scale(1.1); }
-
-        .game-info { padding: 10px; background: rgba(0,0,0,0.6); text-align: center; }
-        .game-title { font-size: 0.85rem; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .game-img { width: 100%; height: 100%; object-fit: cover; }
+        .game-info { padding: 10px; background: rgba(255,255,255,0.05); text-align: center; }
+        .game-title { font-size: 0.8rem; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     </style>
 </head>
 <body>
     <div class="container text-center">
         <h1 class="neon-header">DIGIT BY KT STORE</h1>
-        <p class="welcome-text">CHOOSE YOUR ARENA</p>
-        
+        <p class="welcome-text">CHOOSE YOUR ARENA & LEVEL UP</p>
         <div class="game-grid">
             {% for cat in categories %}
             <div class="game-card" onclick="location.href='/category/{{cat[0]}}'">
-                <div class="game-img-wrapper">
-                    <img src="{{cat[2]}}" class="game-img" alt="{{cat[1]}}">
-                </div>
-                <div class="game-info">
-                    <div class="game-title">{{cat[1]}}</div>
-                </div>
+                <div class="game-img-wrapper"><img src="{{cat[2]}}" class="game-img"></div>
+                <div class="game-info"><div class="game-title">{{cat[1]}}</div></div>
             </div>
             {% endfor %}
         </div>
